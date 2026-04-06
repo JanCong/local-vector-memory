@@ -14,6 +14,12 @@ dependencies = [
     "requests>=2.28.0,<3.0.0",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "ruff>=0.4",
+]
+
 [project.scripts]
 lvm = "local_vector_memory.cli:main"
 

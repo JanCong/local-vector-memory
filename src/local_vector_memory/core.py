@@ -34,11 +34,14 @@ class LocalVectorMemory:
             ollama_url or os.getenv("LVM_OLLAMA_URL", "http://localhost:11434")
         )
         self.model = model or os.getenv("LVM_MODEL", "qwen3-embedding:4b")
-        self.dims = dims or int(os.getenv("LVM_DIMS", "2560"))
+        raw_dims = dims if dims is not None else int(os.getenv("LVM_DIMS", "2560"))
+        self.dims = raw_dims
         self.db_path = db_path or os.getenv("LVM_DB_PATH", "~/.local-vector-memory/qdrant")
         self.collection = collection or os.getenv("LVM_COLLECTION", "memory")
-        self.chunk_size = chunk_size or int(os.getenv("LVM_CHUNK_SIZE", "400"))
-        self.chunk_overlap = chunk_overlap or int(os.getenv("LVM_CHUNK_OVERLAP", "50"))
+        raw_chunk_size = chunk_size if chunk_size is not None else int(os.getenv("LVM_CHUNK_SIZE", "400"))
+        self.chunk_size = raw_chunk_size
+        raw_chunk_overlap = chunk_overlap if chunk_overlap is not None else int(os.getenv("LVM_CHUNK_OVERLAP", "50"))
+        self.chunk_overlap = raw_chunk_overlap
 
         if self.chunk_size < 50 or self.chunk_size > 10000:
             raise ValueError(f"chunk_size must be 50–10000, got {self.chunk_size}")

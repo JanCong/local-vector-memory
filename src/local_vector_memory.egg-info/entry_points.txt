@@ -1,0 +1,2 @@
+[console_scripts]
+lvm = local_vector_memory.cli:main

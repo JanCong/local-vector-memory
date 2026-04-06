@@ -1,0 +1,12 @@
+LICENSE
+README.md
+pyproject.toml
+src/local_vector_memory/__init__.py
+src/local_vector_memory/cli.py
+src/local_vector_memory/core.py
+src/local_vector_memory.egg-info/PKG-INFO
+src/local_vector_memory.egg-info/SOURCES.txt
+src/local_vector_memory.egg-info/dependency_links.txt
+src/local_vector_memory.egg-info/entry_points.txt
+src/local_vector_memory.egg-info/requires.txt
+src/local_vector_memory.egg-info/top_level.txt

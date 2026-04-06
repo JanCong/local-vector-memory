@@ -1,0 +1,97 @@
+# local-vector-memory
+
+Zero-cloud, local-first vector memory CLI. Powered by Ollama embeddings + Qdrant.
+
+**100% local, 100% free, supports Chinese out of the box.**
+
+## Why?
+
+Most vector memory solutions require cloud APIs (OpenAI, Pinecone, etc.). This one runs entirely on your machine — perfect for privacy-first setups, air-gapped environments, or just saving money.
+
+## Features
+
+- 🔒 **100% local** — Ollama embeddings, local Qdrant file storage
+- 🇨🇳 **Chinese-first** — defaults to `qwen3-embedding:4b` (2560d, best Chinese accuracy)
+- ⚡ **Fast** — ~230ms/query on M1 Mac
+- 📦 **Zero cloud deps** — no API keys, no Docker, no signup
+- 🔄 **Auto reindex** — point at your markdown files, rebuild index in seconds
+- 🎯 **Accurate** — 100% Top-3 hit rate in real-world tests
+
+## Quick Start
+
+### Prerequisites
+
+```bash
+# Install Ollama (https://ollama.com)
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Pull embedding model
+ollama pull qwen3-embedding:4b
+
+# Install qdrant-client
+pip install qdrant-client requests
+```
+
+### Install
+
+```bash
+pip install local-vector-memory
+```
+
+### Usage
+
+```bash
+# Initialize (first time)
+lvm init
+
+# Add a memory
+lvm add "OpenClaw baseUrl must be http://localhost:11434 without /v1"
+
+# Search
+lvm search "how to fix baseUrl"
+lvm search "baseUrl配置" --limit 3
+
+# Reindex markdown files
+lvm reindex --dir ~/notes --glob "**/*.md"
+
+# List stats
+lvm stats
+```
+
+### Configuration
+
+Environment variables (or `.env` file):
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `LVM_OLLAMA_URL` | `http://localhost:11434` | Ollama API URL |
+| `LVM_MODEL` | `qwen3-embedding:4b` | Embedding model |
+| `LVM_DIMS` | `2560` | Vector dimensions (model-dependent) |
+| `LVM_DB_PATH` | `~/.local-vector-memory/qdrant` | Qdrant storage path |
+| `LVM_COLLECTION` | `memory` | Qdrant collection name |
+| `LVM_CHUNK_SIZE` | `400` | Text chunk size (chars) |
+| `LVM_CHUNK_OVERLAP` | `50` | Overlap between chunks |
+
+## Embedding Model Comparison
+
+Tested on Chinese memory queries (M1 Mac, 16GB):
+
+| Model | Dimensions | Size | Hit Rate (Top-3) | Speed |
+|-------|-----------|------|-------------------|-------|
+| `qwen3-embedding:4b` | 2560 | ~2.5GB | **100%** ✅ | 232ms |
+| `bge-m3` | 1024 | ~570MB | 40% | 180ms |
+| `nomic-embed-text` | 768 | 274MB | 30% | 150ms |
+
+**Recommendation:** `qwen3-embedding:4b` for Chinese/English mixed content.
+
+## Architecture
+
+```
+Your .md files → chunking → Ollama embed → Qdrant (local file) → cosine search
+```
+
+No Docker. No cloud. No API keys. Just local files + Ollama.
+
+## License
+
+MIT
